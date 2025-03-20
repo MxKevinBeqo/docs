@@ -11,7 +11,7 @@ weight: 30
 The [Mendix Cloud GenAI portal](https://genai.home.mendix.com/) is an online platform that provides access to Mendix Cloud GenAI resources. These resource packs on Mendix Cloud enable seamless integration with Generative AI technology, provisioned and hosted by Mendix:
 
 * GenAI Model Resource Packs provide access to model resources: Anthropic's  Claude and Cohere's Embed. 
-* GenAI Knowledge Base Resource Packs provide the infrastructure to deliver RAG architecture and other GenAI use cases requiring a vector database. 
+* GenAI Knowledge Base Resource Packs provide the infrastructure to deliver RAG architecture and other GenAI use cases requiring a vector database.
 
 GenAI resource packs accelerate the delivery of full Generative AI solutions within Mendix apps that seamlessly integrate with GenAI technology. Learn more about [Mendix Cloud GenAI Resource Packs](https://docs.mendix.com/appstore/modules/genai/mx-cloud-genai/resource-packs/) and the [Mendix Cloud GenAI Connector](/appstore/modules/genai/mx-cloud-genai/MxGenAI-connector/). To get started with a GenAI-infused Mendix application, see [creating a chatbot using the AI Bot Starter App](https://docs.mendix.com/appstore/modules/genai/using-genai/starter-template/) or [building a GenAI app from scratch with the Blank GenAI App](https://docs.mendix.com/appstore/modules/genai/using-genai/blank-app/). 
 
