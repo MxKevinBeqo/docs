@@ -60,7 +60,7 @@ jobs:
 
           echo "FINDING MERGED BRANCHES"
           # Gets list of merged branches
-          MERGED_BRANCHES=$(git branch -r --merged origin/dev | grep -v "origin/development" | grep -v "origin/main" | grep -v "origin/dev" | grep -v "origin/master" | sed 's/origin\///')
+          MERGED_BRANCHES=$(git branch -r --merged origin/development | grep -v "origin/development" | grep -v "origin/main" | grep -v "origin/production"  | grep -v "origin/master" | sed 's/origin\///')
 
           CURRENT_DATE=$(date +%s)
           echo "Current date: $(date -d @$CURRENT_DATE)"
@@ -79,16 +79,16 @@ jobs:
               continue
             fi
             
-            # Finds when branch was merged to dev
+            # Finds when branch was merged to development
             # Gets the commit hash where the branch was merged
-            MERGE_HASH=$(git log --grep="Merge branch.*$BRANCH" origin/dev -n 1 --pretty=format:"%H" || git log --grep="Merge pull request.*$BRANCH" origin/dev -n 1 --pretty=format:"%H")
+            MERGE_HASH=$(git log --grep="Merge branch.*$BRANCH" origin/development -n 1 --pretty=format:"%H" || git log --grep="Merge pull request.*$BRANCH" origin/development -n 1 --pretty=format:"%H")
             
             # If no merge commit found, do:
             if [[ -z "$MERGE_HASH" ]]; then
               # Get the last commit of the branch
               LAST_COMMIT=$(git log -n 1 origin/$BRANCH --pretty=format:"%H")
-              # Find when this commit or its equivalent appeared in dev
-              MERGE_HASH=$(git log origin/dev --pretty=format:"%H" --grep="$(git log -n 1 $LAST_COMMIT --pretty=format:"%s")" -n 1)
+              # Find when this commit or its equivalent appeared in development
+              MERGE_HASH=$(git log origin/development --pretty=format:"%H" --grep="$(git log -n 1 $LAST_COMMIT --pretty=format:"%s")" -n 1)
             fi
             
             # If still no merge info, use the last commit on the branch
