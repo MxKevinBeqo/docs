@@ -9,17 +9,22 @@ weight: 2
 
 Studio Pro extensions can be developed using typescript and use standard web development technologies to extend the Studio Pro development environment. This guide shows you how to set up a basic development environment for building an extension using the web extensibility API.
 
+For more information, see the [Mendix Studio Pro Web Extensibility API](http://apidocs.rnd.mendix.com/11/extensions-api/index.html).
+
 ### Prerequisites
 
 You will need the following prerequisites:
 
 * Mendix Studio Pro version 10.21.0 or higher [Mendix Studio Pro](https://marketplace.mendix.com/link/studiopro). 
-* Install the latest Studio Pro version from the Mendix [Marketplace](https://marketplace.mendix.com/link/studiopro/).
 * A development IDE to develop your extensions. We recommend using [Visual Studio Code](https://code.visualstudio.com/).
 * Install the latest version 22.x.x of Node: https://nodejs.org/en/download.
 
 {{% alert color="info" %}}
 Extensions can be built on any operating system as the underlying framework is cross-platform.
+{{% /alert %}}
+
+{{% alert color="info" %}}
+Please note that extension development is only possible by starting Studio Pro with the `--enable-extension-development` feature flag.
 {{% /alert %}}
 
 ## Creating Your First Extension
@@ -95,11 +100,11 @@ To test the extension, do the following in File Explorer.
 
     The extension files have now been added to the app.
     
-1. Start Studio Pro with the following command line parameters to tell it to use the extensions in the folder.
+1. Start Studio Pro with the following command line parameter to tell it to use the extensions in the folder.
 
-    `--enable-extension-development --enable-webview-debugging`
+    `--enable-extension-development`
 
-    These flags instruct Studio Pro to do the following:
+    This flag instructs Studio Pro to do the following:
 
     * Load extensions from the `extensions` folder
     * Enable web debugging tools which will be useful when developing your extension
@@ -107,6 +112,10 @@ To test the extension, do the following in File Explorer.
 1. In Studio Pro, open the new app. 
 
     You will see a new `Extensions` item in the top menu.
+
+{{% alert color="warning" %}}
+Extension names used in place of `myextension` must only contain digits, letters, dashes, and underscores. Extensions with an invalid name will not be loaded and will display an error.
+{{% /alert %}}
 
 ## Conclusion
 
