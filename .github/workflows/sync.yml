@@ -20,7 +20,7 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ env.DEFAULT_BRANCH }}
-          token: ${{ secrets.FORK_DOCS_TOKEN }}
+          token: ${{ secrets.SYNC_DOCS_TOKEN }}
 
       - name: Configure Git
         run: |
