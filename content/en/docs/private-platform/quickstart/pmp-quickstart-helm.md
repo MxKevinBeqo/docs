@@ -220,6 +220,12 @@ global:
   imageRegistry:
     url: "customer-prod.azurecr.io"
     pullSecrets: []  # Empty when using managed identity
+  azureWorkloadIdentity: # If using Azure workload identity
+    enable: false
+    clientID: "bef7d0f9-cd14-437c-931d-caed72f42627" # Set up the Global Azure Workload Identity Client ID for all components,which can override at Component level
+  awsIRSA:  # If using Azure workload identity
+    enable: false
+    roleArn: "arn:aws:iam::123456789012:role/mx-privatecloud-role"  # e.g., "arn:aws:iam::123456789012:role/mx-privatecloud-role"
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Components (enable/disable as needed)
@@ -257,8 +263,33 @@ mx-privatecloud-license-manager:
   ingress:
     enabled: false
 
-mx-privatecloud:
+mxplatform:
   enable: true
+  pclm:
+    serviceUrl: "http://mx-privatecloud-license-manager"
+    username: "administrator"
+    password: "admin-password"
+  spec:
+    appURL: "app.example.com"
+    sourceURL: "oci-image://registry/app:tag"
+    database:
+      servicePlan: "your-db-plan"
+    storage:
+      servicePlan: "your-storage-plan"
+    resources:
+      limits:
+        cpu: 1000m
+        memory: 2048Mi
+      requests:
+        cpu: 500m
+        memory: 1024Mi
+    runtime:
+      mxAdminPassword: "admin-password"
+      applicationRootUrl: "https://md.mxplatform.net"
+
+## Required for Connected mode
+mx-privatecloud:
+  enable: false
   nats:
     server_addr: "nats://nats.nats.svc:4222"
   authenticator:
@@ -275,30 +306,14 @@ mx-privatecloud:
       password: "password"
 
 maia-appgen:
-  enable: true
+  enable: false
   env:
     - name: MXASSIST_COPILOT_MXID3_URL
       value: "https://pmp.example.com/oidc/"
 
 svix-server:
-  enable: true
+  enable: false
   postgres: "postgresql://user:pass@host:5432/svix"
-
-mxplatform:
-  enable: true
-  pclm:
-    serviceUrl: "http://mx-privatecloud-license-manager"
-    username: "administrator"
-    password: "admin-password"
-  spec:
-    appURL: "https://app.example.com"
-    sourceURL: "oci-image://registry/app:tag"
-    database:
-      servicePlan: "your-db-plan"
-    storage:
-      servicePlan: "your-storage-plan"
-    runtime:
-      mxAdminPassword: "admin-password"
 
 mxplatform-kube-agent:
   enable: false
@@ -397,10 +412,34 @@ This is the Container registry URL applied to all components, unless overridden.
 * **Type** - `string`
 * Default value - `""`
 
+For Azure:
 ```text
 global:
   imageRegistry:
     url: "customer-prod.azurecr.io"
+  # Global Azure Workload Identity configuration
+  # REQUIRED for Azure Key Vault authentication
+  azureWorkloadIdentity:
+    enabled: true
+    tenantID: "yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy"  # Shared tenant
+  # Global Secret Provider configuration
+  secretProviderclass:
+    enable: true
+    provider: "azure"
+    azureparameters:
+      keyvaultName: "shared-keyvault"  # Same Key Vault for all components
+```
+
+For AWS:
+```text
+global:
+  imageRegistry:
+    url: "customer-prod.awscr.io"
+  # Global IRSA configuration
+  # REQUIRED for AWS IRSA authentication
+  awsIRSA:
+    enable: true
+    roleArn: "arn:aws:iam::123456789012:role/mx-privatecloud-role"  # e.g., "arn:aws:iam::123456789012:role/mx-privatecloud-role"
 ```
 
 The priority is applied in this order: Component-specific > Global > Default.
